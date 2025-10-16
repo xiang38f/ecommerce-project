@@ -36,6 +36,9 @@
 2.  等待 Maven 自動下載所有依賴。
 3.  執行專案的主應用程式類別 (OrderSystemDemoApplication.java)。
 4.  後端服務預設將運行在 `http://localhost:8080`。
+5.  可以使用 `http://localhost:8080/swagger-ui/index.html#/` 查看swagger文件
+<img width="1452" height="832" alt="截圖 2025-10-16 晚上9 55 43" src="https://github.com/user-attachments/assets/5d8f58ea-b060-4a04-8083-08433f900139" />
+
 
 ### 3. 前端 (Frontend) 啟動
 
@@ -44,6 +47,8 @@
 3.  執行 `npm run dev` 來啟動前端開發伺服器。
 4.  前端應用程式預設將運行在 `http://localhost:5173`。
 5.  透過瀏覽器輸入 `http://localhost:5173` 來使用本系統。
+
+<img width="1460" height="833" alt="截圖 2025-10-16 晚上9 56 59" src="https://github.com/user-attachments/assets/80ab89bc-0746-4a56-af2a-f1ffc8aeac9d" />
 
 
 感謝您的時間！
