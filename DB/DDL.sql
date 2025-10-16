@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS `esun_order_system`;
+CREATE DATABASE `esun_order_system` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `esun_order_system`;
+
 DROP TABLE IF EXISTS `Order_Detail`;
 DROP TABLE IF EXISTS `Orders`;
 DROP TABLE IF EXISTS `Product`;
