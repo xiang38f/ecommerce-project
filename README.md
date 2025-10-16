@@ -39,7 +39,7 @@
 
 ### 3. 前端 (Frontend) 啟動
 
-1.  使用終端機 (Terminal) 進入 `/frontend` 資料夾。
+1.  使用終端機 (Terminal) 進入 `/frontend/vue-project` 資料夾。
 2.  執行 `npm install` 來安裝所有前端依賴套件。
 3.  執行 `npm run dev` 來啟動前端開發伺服器。
 4.  前端應用程式預設將運行在 `http://localhost:5173`。
