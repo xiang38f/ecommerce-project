@@ -27,27 +27,24 @@ public class OrderDetailService {
     }
 
     public OrderDetailDto getOrderDetailById(String orderId) {
-        // 1. 查找主訂單，如果找不到就拋出例外
+
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("找不到訂單，ID: " + orderId));
 
-        // 2. 查找此訂單的所有明細
         List<OrderDetail> orderDetails = orderDetailRepository.findByOrderId(orderId);
 
-        // 3. 將 List<OrderDetail> 轉換成 List<OrderItemDto> (包含商品名稱)
         List<OrderItemDto> itemDtos = orderDetails.stream()
-                .map(this::convertToItemDto) // 呼叫我們之前寫的輔助方法
+                .map(this::convertToItemDto)
                 .collect(Collectors.toList());
 
-        // 4. 組合最終的、完整的 DTO 物件
+
         OrderDetailDto detailDto = new OrderDetailDto();
         detailDto.setOrderId(order.getOrderId());
         detailDto.setMemberId(order.getMemberId());
         detailDto.setTotalPrice(order.getTotalPrice());
         detailDto.setPayStatus(order.getPayStatus());
-        detailDto.setItems(itemDtos); // 把品項列表放進去
+        detailDto.setItems(itemDtos);
 
-        // 5. 回傳這個完整的物件
         return detailDto;
     }
 

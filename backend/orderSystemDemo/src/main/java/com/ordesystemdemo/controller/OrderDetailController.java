@@ -1,6 +1,5 @@
 package com.ordesystemdemo.controller;
 
-import com.ordesystemdemo.dto.OrderDetailDto;
 import com.ordesystemdemo.service.OrderDetailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

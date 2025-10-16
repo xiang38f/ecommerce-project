@@ -14,7 +14,6 @@ import { RouterView } from 'vue-router'
 </template>
 
 <style scoped>
-/* 你可以加一些全站通用的樣式 */
 main {
   padding: 1rem;
 }

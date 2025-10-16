@@ -64,7 +64,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* 樣式維持不變 */
 .order-info {
   line-height: 1.8;
 }

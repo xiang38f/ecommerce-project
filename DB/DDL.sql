@@ -2,17 +2,23 @@ DROP DATABASE IF EXISTS `esun_order_system`;
 CREATE DATABASE `esun_order_system` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `esun_order_system`;
 
+
+-- ================================
+-- 清除舊資料表（依外鍵順序）
+-- ================================
 DROP TABLE IF EXISTS `Order_Detail`;
 DROP TABLE IF EXISTS `Orders`;
 DROP TABLE IF EXISTS `Product`;
 
+
+-- ================================
+-- 建立資料表
+-- ================================
 CREATE TABLE `Product` (
     `product_id`   VARCHAR(20) NOT NULL,
     `product_name` VARCHAR(100) NOT NULL,
     `price`        DECIMAL(10, 2) NOT NULL,
     `quantity`     INT NOT NULL,
-    `created_at`   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at`   TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -21,7 +27,6 @@ CREATE TABLE `Orders` (
     `member_id`   VARCHAR(20) NOT NULL,
     `total_price` DECIMAL(10, 2) NOT NULL,
     `pay_status`  TINYINT NOT NULL COMMENT '0: 未付款, 1: 已付款',
-    `order_date`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -37,28 +42,36 @@ CREATE TABLE `Order_Detail` (
     FOREIGN KEY (`product_id`) REFERENCES `Product`(`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DELIMITER //
-DROP PROCEDURE IF EXISTS get_order_details;
 
+-- ================================
+-- 移除舊的 Stored Procedures
+-- ================================
+DROP PROCEDURE IF EXISTS `get_order_details`;
+DROP PROCEDURE IF EXISTS `get_available_products`;
+DROP PROCEDURE IF EXISTS `add_new_product`;
+DROP PROCEDURE IF EXISTS `create_order`;
+DROP PROCEDURE IF EXISTS `create_order_detail`;
+DROP PROCEDURE IF EXISTS `update_product_stock`;
+
+
+-- ================================
+-- 建立 Stored Procedures
+-- ================================
 DELIMITER //
-CREATE PROCEDURE get_order_details(IN p_order_id VARCHAR(30))
+
+CREATE PROCEDURE `get_order_details`(IN p_order_id VARCHAR(30))
 BEGIN
     SELECT * FROM `Order_Detail` WHERE order_id = p_order_id;
 END //
-DELIMITER ;
+  
 
-DELIMITER //
-
-CREATE PROCEDURE get_available_products()
+CREATE PROCEDURE `get_available_products`()
 BEGIN
-    SELECT * FROM Product WHERE quantity > 0;
+    SELECT * FROM `Product` WHERE quantity > 0;
 END //
 
-DELIMITER ;
 
-DROP PROCEDURE IF EXISTS add_new_product;
-
-CREATE PROCEDURE add_new_product (
+CREATE PROCEDURE `add_new_product`(
     IN p_product_name VARCHAR(100), 
     IN p_price DECIMAL(10, 2),
     IN p_quantity INT
@@ -69,21 +82,17 @@ BEGIN
 
     SELECT 
         IFNULL(MAX(CAST(SUBSTRING(product_id, 2) AS UNSIGNED)), 0) INTO next_id_num
-    FROM 
-        Product;
+    FROM `Product`;
 
     SET next_id_num = next_id_num + 1;
-
     SET new_product_id = CONCAT('P', LPAD(next_id_num, 3, '0'));
 
-    INSERT INTO Product (product_id, product_name, price, quantity)
+    INSERT INTO `Product` (product_id, product_name, price, quantity)
     VALUES (new_product_id, p_product_name, p_price, p_quantity);
+END //
 
-END
 
-DROP PROCEDURE IF EXISTS create_order;
-
-CREATE PROCEDURE create_order(
+CREATE PROCEDURE `create_order`(
     IN p_member_id VARCHAR(30),
     IN p_total_price DECIMAL(10,2),
     IN p_pay_status INT,
@@ -92,11 +101,12 @@ CREATE PROCEDURE create_order(
 BEGIN
     SET p_order_id = CONCAT('Ms', DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'), FLOOR(RAND() * 1000));
 
-    INSERT INTO Orders (order_id, member_id, total_price, pay_status)
+    INSERT INTO `Orders` (order_id, member_id, total_price, pay_status)
     VALUES (p_order_id, p_member_id, p_total_price, p_pay_status);
-END
+END //
 
-CREATE PROCEDURE create_order_detail(
+
+CREATE PROCEDURE `create_order_detail`(
     IN p_order_id VARCHAR(30),
     IN p_product_id VARCHAR(20),
     IN p_quantity INT,
@@ -104,20 +114,23 @@ CREATE PROCEDURE create_order_detail(
     IN p_item_price DECIMAL(10,2)
 )
 BEGIN
-    INSERT INTO Order_Detail (order_id, product_id, quantity, stand_price, item_price)
+    INSERT INTO `Order_Detail` (order_id, product_id, quantity, stand_price, item_price)
     VALUES (p_order_id, p_product_id, p_quantity, p_stand_price, p_item_price);
-END
+END //
 
-CREATE PROCEDURE update_product_stock(
+
+CREATE PROCEDURE `update_product_stock`(
     IN p_product_id VARCHAR(20),
     IN p_quantity INT
 )
 BEGIN
-    UPDATE Product
+    UPDATE `Product`
     SET quantity = quantity - p_quantity
     WHERE product_id = p_product_id AND quantity >= p_quantity;
-END
+END //
 
+DELIMITER ;
 
-
-
+-- ================================
+-- 結束
+-- ================================

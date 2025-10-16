@@ -55,7 +55,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* 樣式可以參考 CreateOrderView 的表格樣式 */
 .btn-detail {
   display: inline-block;
   padding: 0.4rem 0.8rem;

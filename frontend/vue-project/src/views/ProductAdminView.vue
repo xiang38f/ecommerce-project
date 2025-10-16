@@ -32,7 +32,6 @@
 import { ref } from 'vue';
 import apiService from '@/services/apiService';
 
-// 綁定表單的 ref 中，已移除 productId
 const product = ref({
   productName: '',
   price: null,
@@ -46,14 +45,8 @@ const message = ref('');
 const submitProduct = async () => {
   try {
     const newProductName = product.value.productName;
-
-    // 現在 product.value 送出的物件將不包含 productId，正好符合後端新的需求
     await apiService.createProduct(product.value);
-
-    // 使用我們剛剛存下來的名稱來顯示成功訊息
     message.value = `商品 "${newProductName}" 新增成功！`;
-
-    // 成功後，清空所有欄位
     product.value = { productName: '', price: null, quantity: null };
 
   } catch (error) {

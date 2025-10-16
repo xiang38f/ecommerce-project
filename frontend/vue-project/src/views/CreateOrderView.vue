@@ -75,18 +75,16 @@
 import { ref, onMounted, computed } from 'vue';
 import apiService from '@/services/apiService';
 
-// ... (products, loading, error, cart 維持不變)
 const products = ref([]);
 const loading = ref(true);
 const error = ref(null);
 const cart = ref({});
 const orderMessage = ref('');
 
-// 2. 新增 ref 來綁定輸入框的資料
+
 const customerName = ref('');
 const memberId = ref('');
 
-// onMounted 和 cartItems, orderTotal 維持不變
 onMounted(async () => {
   try {
     const response = await apiService.getProducts();
@@ -124,23 +122,21 @@ const submitOrder = async () => {
     return;
   }
 
-  // 依照後端 API 規格，建立 request body
   const orderData = {
     customerName: customerName.value,
     memberId: memberId.value,
-    totalPrice: orderTotal.value, // 後端需要總價
+    totalPrice: orderTotal.value,
     items: cartItems.value.map(item => ({
       productId: item.productId,
       quantity: item.purchaseQuantity,
-      standPrice: item.price, // 後端需要單價
-      itemPrice: item.subtotal // 後端需要該品項總價
+      standPrice: item.price,
+      itemPrice: item.subtotal
     }))
   };
 
   try {
     const response = await apiService.createOrder(orderData);
     orderMessage.value = `訂單建立成功！訂單編號: ${response.data.orderId}`;
-    // 成功後清空購物車和輸入欄位
     cart.value = {};
     customerName.value = '';
     memberId.value = '';
