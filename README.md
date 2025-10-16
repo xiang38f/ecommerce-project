@@ -26,10 +26,9 @@
 
 ### 1. 資料庫設定
 
-1.  請先建立一個空的資料庫 (例如 `esun_db`)。
-2.  執行位於 `/DB` 資料夾下的 `DDL.sql` 檔案。此腳本將會建立所有必要的資料表結構以及預存程序。
-3.  執行 `/DB` 資料夾下的 `DML.sql` 檔案。此腳本將會寫入題目要求的初始商品資料。
-4.  修改後端專案 `backend/src/main/resources/application.properties`檔案中的資料庫連線設定 (URL, username, password)，使其指向您剛建立的資料庫。
+1.  執行位於 `/DB` 資料夾下的 `DDL.sql` 檔案。此腳本將會建立所有必要的資料表結構以及預存程序。
+2.  執行 `/DB` 資料夾下的 `DML.sql` 檔案。此腳本將會寫入題目要求的初始商品資料。
+3.  修改後端專案 `backend/src/main/resources/application.properties`檔案中的資料庫連線設定 (URL, username, password)，使其指向您剛建立的資料庫。
 
 ### 2. 後端 (Backend) 啟動
 
